@@ -1,0 +1,14 @@
+/* quotes */
+dl {
+  background: #fff url("/css_images/images/apple.png") 0 0 no-repeat;
+}
+
+/* single quotes */
+h1 {
+  background: #fff url('/css_images/images/kiwi.jpg') 0 0 no-repeat;
+}
+
+/* no quotes */
+h2 {
+  background: #fff url(/css_images/images/cantaloupe.png) 0 0 no-repeat;
+}

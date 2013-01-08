@@ -1,0 +1,17 @@
+/* absolute */
+body {
+  background: #fff url("http://example.com/css_images/images/apple.png") 0 0 no-repeat;
+}
+
+/* relative */
+div {
+  background: #fff url("/css_images/images/kiwi.jpg") 0 0 no-repeat;
+}
+
+/* relative root */
+ul {
+  background: #fff url("../images/cantaloupe.png") 0 0 no-repeat;
+}
+
+/* import */
+@import url("import_paths.css");
