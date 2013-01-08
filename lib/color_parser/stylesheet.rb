@@ -2,26 +2,22 @@ module ColorParser
   # a set of css selectors
   class Stylesheet
     TEXT_COLORS = {
-      "aqua"    => "00ffff", "black"  => "000000", "blue"  => "0000ff",
-      "fuchsia" => "ff00ff", "gray"   => "808080", "green" => "008000",
-      "lime"    => "00ff00", "maroon" => "800000", "navy"  => "000080",
-      "olive"   => "808000", "purple" => "800080", "red"   => "ff0000",
-      "silver"  => "c0c0c0", "teal"   => "008080", "white" => "ffffff",
-      "yellow"  => "ffff00"
+      aqua:    "00ffff", black:  "000000", blue:  "0000ff",
+      fuchsia: "ff00ff", gray:   "808080", green: "008000",
+      lime:    "00ff00", maroon: "800000", navy:  "000080",
+      olive:   "808000", purple: "800080", red:   "ff0000",
+      silver:  "c0c0c0", teal:   "008080", white: "ffffff",
+      yellow:  "ffff00"
     }
 
-    attr_reader :type, :host, :path, :query, :text
+    attr_reader :url, :type, :host, :path, :query, :text
     
     def initialize(options)
       @type  = options[:type]
-      @host  = options[:host]
-      @path  = options[:path]
-      @query = options[:query]
       @text  = options[:text]
-    end
+      @url   = options[:url]
 
-    def url
-      "http://#{host}#{path}#{"?"+query if query}" 
+      @host, @path, @query = ColorParser.parse_url(url)
     end
 
     def name
@@ -48,6 +44,20 @@ module ColorParser
 
     def border_colors
       @border_colors ||= parse_colors(border_properties)
+    end
+
+
+    def images
+      images = []
+
+      image_properties.each do |key, value|
+        if value.include?("url") && match = value.match(/url\(['"]?([^'")]+)/)
+          asset_url = ColorParser.parse_asset(url, match[1])
+          images << Image.new(asset_url)
+        end
+      end
+
+      images
     end
 
 
@@ -98,14 +108,12 @@ module ColorParser
       text.scan(/@import(?:\surl|\s)(.*?)[;\n]+/).each do |style|
         style_path = style.first.gsub(/['"\(\);]/, "")
 
-        host, path, query = ColorParser.parse_asset(url, style_path)
-        next unless text = ColorParser.retrieve(host, path, query)
+        asset_url = ColorParser.parse_asset(url, style_path)
+        next unless text = ColorParser.request.get(asset_url)
 
-        css = Stylesheet.new(:text  => text, 
-                             :type  => "imported", 
-                             :host  => host, 
-                             :path  => path, 
-                             :query => query)
+        css = Stylesheet.new(text: text, 
+                             type: "imported", 
+                             url:  asset_url)
         styles << css
       end
 
@@ -136,6 +144,11 @@ module ColorParser
       color_properties.select do |key, value| 
         key.include?("border") || key.include?("outline")
       end
+    end
+
+    # find properties that might have an image
+    def image_properties
+      color_properties.select {|key, value| key.include?("background") }
     end
 
     def parse_colors(property_list)
@@ -172,7 +185,7 @@ module ColorParser
 
     # find hex for textual color
     def text_to_hex(color)
-      TEXT_COLORS[color]
+      TEXT_COLORS[color.intern]
     end
     
     # convert 3 digit hex to 6
