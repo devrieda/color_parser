@@ -28,10 +28,6 @@ module ColorParser
       colors.sort {|a,b| b[1]<=>a[1] }.map {|clr| clr.first }
     end
 
-    def images
-      @images ||= inline_images + stylesheet_images
-    end
-
     def stylesheets
       @stylesheets ||= inline_styles + external_styles
     end
@@ -68,24 +64,6 @@ module ColorParser
       end
 
       styles
-    end
-
-    def inline_images
-      images = []
-
-      doc.search("img").map do |image|
-        next unless src = image.attributes["src"]
-        next unless src.match(/gif|jpg|jpeg|png|bmp/)
-
-        host, path, query = ColorParser.parse_asset(url, src)
-        images << Image.new(:host => host, :path => path, :query => query)
-      end
-
-      images
-    end
-
-    def stylesheet_images
-      [stylesheets.map {|style| style.images }].flatten
     end
   end
 

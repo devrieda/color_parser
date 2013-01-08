@@ -51,20 +51,6 @@ module ColorParser
     end
 
 
-    def images
-      images = []
-
-      image_properties.each do |key, value|
-        if value.include?("url") && match = value.match(/url\(['"]?([^'")]+)/)
-          host, path, query = ColorParser.parse_asset(url, match[1])
-          images << Image.new(:host => host, :path => path, :query => query)
-        end
-      end
-
-      images
-    end
-
-
     # groups of css selectors (including imported styles)
     def selectors
       selectors = {}
@@ -150,11 +136,6 @@ module ColorParser
       color_properties.select do |key, value| 
         key.include?("border") || key.include?("outline")
       end
-    end
-
-    # find properties that might have an image
-    def image_properties
-      color_properties.select {|key, value| key.include?("background") }
     end
 
     def parse_colors(property_list)
