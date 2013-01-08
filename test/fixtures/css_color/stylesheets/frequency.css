@@ -1,0 +1,35 @@
+/* backgrounds */
+div {
+  background-color: #3a5dc4;
+}
+div {
+  background: #386ec0 url("/images/something.png");
+}
+div {
+  background: #386ec0 url("/images/something.png");
+}
+
+
+/* text */
+div {
+  color: #718ad7;
+}
+h1 {
+  color: #386ec0;
+}
+h2 {
+  color: #386ec0;
+}
+
+/* borders */
+div {
+  border-color: #718ad7;
+}
+div {
+  border: 1px solid #3a5dc4;
+}
+div {
+  border: 1px solid #3a5dc4;
+}
+
+@import url("imported_selectors.css");

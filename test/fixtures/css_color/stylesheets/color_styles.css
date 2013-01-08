@@ -1,0 +1,34 @@
+/* color names - 008080 */
+div {
+  background-color: teal;
+}
+
+/* hex */
+div {
+  color: #386ec0;
+}
+
+/* hex short */
+div {
+  color: #c0c;
+}
+
+/* rgb -- 718ad7 */
+div {
+  color: rgb(113,138,215);
+}
+
+/* rgb spaces -- 3a5dc4 */
+div {
+  color: rgb(58, 93, 196);
+}
+
+/* rgba -- 29469e */
+div {
+  color: rgba(41,70,158,0.5);
+}
+
+/* rgba spaces -- 3f6aeb */
+div {
+  color: rgba(63, 106, 235, 0.5);
+}

@@ -1,0 +1,24 @@
+/* background-color */
+div {
+  background-color: #abcdef;
+}
+
+/* background */
+div {
+  background: #abcdef url("/images/something.png");
+}
+
+/* border-color */
+div {
+  border-color: #abcdef;
+}
+
+/* border */
+div {
+  border: 1px solid #abcdef;
+}
+
+/* text color */
+div {
+  color: #abcdef;
+}
