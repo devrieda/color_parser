@@ -73,7 +73,7 @@ module ColorParser
         uri = URI.parse(URI.escape(url.strip))
       end
 
-      response = http.request(build_request(uri))
+      response = get_response(uri)
 
       # redirect
       @prev_redirect ||= ""
@@ -122,14 +122,15 @@ module ColorParser
     end
 
     # build http request object
-    def build_request(uri)
+    def get_response(uri)
       http = Net::HTTP.new(uri.host, uri.port)
       http.open_timeout = 15
       http.read_timeout = 30
 
       request = Net::HTTP::Get.new(uri.request_uri)
       request["User-Agent"] = user_agent
-      request
+
+      http.request(request)
     end
 
     # throttle requests to 1 per sec
