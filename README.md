@@ -4,17 +4,8 @@ The ColorParser gem provides a simple way to parse the colors from an html page 
 
 ## Example
 
-Local Request: 
-
 ```ruby
-page = ColorParser::Page.fetch("index.html")
-colors = page.colors
-```
-
-Remote Request:
-
-```ruby
-page = ColorParser::Page.fetch("http://sportspyder.com/")
+page = ColorParser::Page.new("http://sportspyder.com/")
 colors = page.colors
 ```
 
