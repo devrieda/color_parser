@@ -1,6 +1,5 @@
 require 'net/http'
 require 'uri'
-require 'curb'
 require 'nokogiri'
 
 require 'color_parser/version'
