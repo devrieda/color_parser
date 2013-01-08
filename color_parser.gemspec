@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
 
   gem.authors       = ["Derek DeVries"]
   gem.email         = ["derek@sportspyder.com"]
-  gem.homepage      = "http://sportspyder.com"
+  gem.homepage      = "https://github.com/devrieda/color_parser"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
