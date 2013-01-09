@@ -1,6 +1,6 @@
 ## ColorParser
 
-The ColorParser gem provides a simple way to parse the colors from an html page or CSS file. It works with both local and remote resources. 
+The ColorParser gem provides a simple way to parse the colors from an HTML page. It scans both the HTML and CSS to find all colors and sort them by frequency used. 
 
 ## Example
 
