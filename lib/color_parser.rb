@@ -5,6 +5,7 @@ require 'nokogiri'
 require 'color_parser/version'
 require 'color_parser/page'
 require 'color_parser/stylesheet'
+require 'color_parser/color'
 require 'color_parser/image'
 
 module ColorParser
