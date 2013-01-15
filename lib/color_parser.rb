@@ -57,7 +57,7 @@ module ColorParser
   # Request an asset
   #
   class Request    
-    @@last_request = Time.now
+    @@last_request = nil
 
     # default throttle requests 1 per sec
     def initialize(params={})
@@ -135,7 +135,7 @@ module ColorParser
 
     # throttle requests to 1 per sec
     def throttle
-      sleep @throttle if @@last_request + @throttle > Time.now
+      sleep @throttle if @@last_request && @@last_request + @throttle > Time.now
       @@last_request = Time.now
     end
   end
