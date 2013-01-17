@@ -91,7 +91,7 @@ module ColorParser
       if response.to_s.index 'Bad Request' || response.nil?
         raise HTTPError, "invalid HTTP request #{url}" 
       end
-      
+
       response = fix_encoding(response)
       response.body
     end
@@ -111,8 +111,17 @@ module ColorParser
     # - or - 
     # text/html    
     def fix_encoding(response)
+      # try header first
       charset = if response.header["Content-Type"].to_s.include?("charset")
         response.header["Content-Type"].split(";")[1].split("=")[1]
+
+      # html4 meta tag
+      elsif match_data = response.body.match(/content.*charset=(.*)\"/)
+        match_data[1]
+        
+      # html5 meta tag
+      elsif match_data = response.body.match(/meta charset=.+(UTF-8).+/)
+        match_data[1]
       else
         "UTF-8"
       end
