@@ -9,7 +9,8 @@ require 'color_parser/color'
 require 'color_parser/image'
 
 module ColorParser
-
+  class HttpError; end
+  
   # Build url of an asset based on the relative/absolute url
   def self.parse_asset(doc_url, asset_url)
     doc_host,   doc_path,   doc_query   = self.parse_url(doc_url)
