@@ -22,5 +22,12 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency("nokogiri", "~> 1.5")
+
   gem.add_development_dependency("rake")
+  gem.add_development_dependency("rspec", "~> 2.9")
+
+  # guard
+  gem.add_development_dependency("guard", "~> 1.7")
+  gem.add_development_dependency("guard-rspec", "~> 2.5")
+  gem.add_development_dependency("rb-fsevent", "~> 0.9")
 end
