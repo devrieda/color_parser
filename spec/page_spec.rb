@@ -1,24 +1,24 @@
-require_relative "test_helper"
+require 'spec_helper'
 
 describe Page do
-  def setup
-    ColorParser.request = ColorParser::TestRequest.new
+  before(:each) do 
+    ColorParser.request = FakeRequest.new
   end
 
   it "should initialize url" do
     url = "http://example.com/css/inline.html?foo=bar"
     page = ColorParser::Page.new(url)
     
-    page.url.must_equal url
+    expect(page.url).to eq url
   end
 
   it "should parse url" do
     url = "http://example.com/css/inline.html?foo=bar"
     page = ColorParser::Page.new(url)
 
-    page.host.must_equal  "example.com" 
-    page.path.must_equal  "/css/inline.html"
-    page.query.must_equal "foo=bar"
+    expect(page.host).to eq  "example.com" 
+    expect(page.path).to eq  "/css/inline.html"
+    expect(page.query).to eq "foo=bar"
   end
 
   # Stylesheet sources
@@ -27,24 +27,24 @@ describe Page do
     page = ColorParser::Page.new(url)
   
     # 2 found
-    page.stylesheets.length.must_equal 2
+    expect(page.stylesheets.length).to eq 2
 
     # stylesheet content
     sheet = page.stylesheets.first
-    sheet.type.must_equal "inline"
-    sheet.text.must_include "background"
+    expect(sheet.type).to eq "inline"
+    expect(sheet.text).to include "background"
   end
 
   it "should build styles with inine css with import" do 
     url = "http://example.com/css/inline_import.html"
     page = ColorParser::Page.new(url)
 
-    page.stylesheets.length.must_equal 1
+    expect(page.stylesheets.length).to eq 1
   
-    page.stylesheets[0].name.must_equal                "inline_import.html"
-    page.stylesheets[0].stylesheets[0].name.must_equal "print.css"
-    page.stylesheets[0].stylesheets[1].name.must_equal "fonts.css"
-    page.stylesheets[0].stylesheets[2].name.must_equal "colors.css"
+    expect(page.stylesheets[0].name).to eq                "inline_import.html"
+    expect(page.stylesheets[0].stylesheets[0].name).to eq "print.css"
+    expect(page.stylesheets[0].stylesheets[1].name).to eq "fonts.css"
+    expect(page.stylesheets[0].stylesheets[2].name).to eq "colors.css"
   end
   
   it "should build styles from external relative css" do 
@@ -52,12 +52,12 @@ describe Page do
     page = ColorParser::Page.new(url)
 
     # 2 found
-    page.stylesheets.length.must_equal 2
+    expect(page.stylesheets.length).to eq 2
 
     # stylesheet content
     sheet = page.stylesheets.first
-    sheet.type.must_equal "external"
-    sheet.text.must_include "background"
+    expect(sheet.type).to eq "external"
+    expect(sheet.text).to include "background"
   end
 
   it "should build styles from external relative root css" do 
@@ -65,12 +65,12 @@ describe Page do
     page = ColorParser::Page.new(url)
   
     # 2 found
-    page.stylesheets.length.must_equal 2
+    expect(page.stylesheets.length).to eq 2
   
     # stylesheet content
     sheet = page.stylesheets.first
-    sheet.type.must_equal "external"
-    sheet.text.must_include "background"
+    expect(sheet.type).to eq "external"
+    expect(sheet.text).to include "background"
   end
 
   it "should build styles from external absolute css" do 
@@ -78,12 +78,12 @@ describe Page do
     page = ColorParser::Page.new(url)
   
     # 2 found
-    page.stylesheets.length.must_equal 2
+    expect(page.stylesheets.length).to eq 2
   
     # stylesheet content
     sheet = page.stylesheets.first
-    sheet.type.must_equal "external"
-    sheet.text.must_include "background"
+    expect(sheet.type).to eq "external"
+    expect(sheet.text).to include "background"
   end
   
   it "should build styles from imported css" do 
@@ -91,18 +91,18 @@ describe Page do
     page = ColorParser::Page.new(url)
     css = page.stylesheets
   
-    css.length.must_equal 2
+    expect(css.length).to eq 2
   
     # 5 found 
-    css[0].name.must_include "screen.css"
-    css[1].name.must_include "print.css"
+    expect(css[0].name).to include "screen.css"
+    expect(css[1].name).to include "print.css"
 
-    css[0].stylesheets[0].name.must_include "master.css"
-    css[0].stylesheets[1].name.must_include "fonts.css"
-    css[0].stylesheets[2].name.must_include "ie.css"
-    css[0].stylesheets[3].name.must_include "images.css"
-    css[0].stylesheets[4].name.must_include "borders.css"
-    css[0].stylesheets[5].name.must_include "colors.css"
+    expect(css[0].stylesheets[0].name).to include "master.css"
+    expect(css[0].stylesheets[1].name).to include "fonts.css"
+    expect(css[0].stylesheets[2].name).to include "ie.css"
+    expect(css[0].stylesheets[3].name).to include "images.css"
+    expect(css[0].stylesheets[4].name).to include "borders.css"
+    expect(css[0].stylesheets[5].name).to include "colors.css"
   end
   
   it "should not fail from an invalid css path" do 
@@ -110,8 +110,8 @@ describe Page do
     page = ColorParser::Page.new(url)
   
     # 1 found
-    page.stylesheets.length.must_equal 1
-    page.stylesheets[0].name.must_include "screen.css"
+    expect(page.stylesheets.length).to eq 1
+    expect(page.stylesheets[0].name).to include "screen.css"
   end
   
   
@@ -122,10 +122,10 @@ describe Page do
     page   = ColorParser::Page.new(url)
     images = page.images
   
-    images.size.must_equal 2
+    expect(images.size).to eq 2
   
-    images[0].url.must_equal "http://example.com/inline_images/images/apple.png"
-    images[1].url.must_equal "http://example.com/inline_images/images/kiwi.jpg"
+    expect(images[0].url).to eq "http://example.com/inline_images/images/apple.png"
+    expect(images[1].url).to eq "http://example.com/inline_images/images/kiwi.jpg"
   end
   
   it "should build images from inline images with relative root paths" do 
@@ -133,10 +133,10 @@ describe Page do
     page   = ColorParser::Page.new(url)
     images = page.images
   
-    images.size.must_equal 2
+    expect(images.size).to eq 2
   
-    images[0].url.must_equal "http://example.com/inline_images/images/apple.png"
-    images[1].url.must_equal "http://example.com/inline_images/images/kiwi.jpg"
+    expect(images[0].url).to eq "http://example.com/inline_images/images/apple.png"
+    expect(images[1].url).to eq "http://example.com/inline_images/images/kiwi.jpg"
   end
   
   it "should build images from inline images with absolute paths" do 
@@ -144,10 +144,10 @@ describe Page do
     page   = ColorParser::Page.new(url)
     images = page.images
   
-    images.size.must_equal 2
+    expect(images.size).to eq 2
   
-    images[0].url.must_equal "http://example.com/inline_images/images/apple.png"
-    images[1].url.must_equal "http://example.com/inline_images/images/kiwi.jpg"
+    expect(images[0].url).to eq "http://example.com/inline_images/images/apple.png"
+    expect(images[1].url).to eq "http://example.com/inline_images/images/kiwi.jpg"
   end
   
   
@@ -158,13 +158,13 @@ describe Page do
     page   = ColorParser::Page.new(url)
     images = page.images
   
-    images.size.must_equal 5
+    expect(images.size).to eq 5
 
-    images[0].name.must_equal "mango.png"
-    images[1].name.must_equal "apple.png"
-    images[2].name.must_equal "kiwi.jpg"
-    images[3].name.must_equal "cantaloupe.png"
-    images[4].name.must_equal "pineapple.png"
+    expect(images[0].name).to eq "mango.png"
+    expect(images[1].name).to eq "apple.png"
+    expect(images[2].name).to eq "kiwi.jpg"
+    expect(images[3].name).to eq "cantaloupe.png"
+    expect(images[4].name).to eq "pineapple.png"
   end
 
 
@@ -175,12 +175,12 @@ describe Page do
     page   = ColorParser::Page.new(url)
     colors = page.colors
   
-    colors["386ec0"].must_equal 4
-    colors["3a5dc4"].must_equal 3
-    colors["718ad7"].must_equal 2
-    colors["ff0000"].must_equal 1
-    colors["357ad1"].must_equal 1
-    colors["535353"].must_equal 1
+    expect(colors["386ec0"]).to eq 4
+    expect(colors["3a5dc4"]).to eq 3
+    expect(colors["718ad7"]).to eq 2
+    expect(colors["ff0000"]).to eq 1
+    expect(colors["357ad1"]).to eq 1
+    expect(colors["535353"]).to eq 1
   end
   
   it "should solot colors by frequency" do 
@@ -188,7 +188,7 @@ describe Page do
     page   = ColorParser::Page.new(url)
 
     colors = ["386ec0", "3a5dc4", "718ad7", "535353", "357ad1", "ff0000"]
-    page.colors_by_frequency.must_equal colors
+    expect(page.colors_by_frequency).to eq colors
   end
   
 end
