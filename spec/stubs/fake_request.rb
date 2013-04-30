@@ -1,5 +1,5 @@
 module ColorParser
-  class TestRequest
+  class FakeRequest
     def initialize(params={})
     end
     
@@ -12,7 +12,7 @@ module ColorParser
       end
 
       # simple hack to read in fixtures instead of url for tests
-      fixture = "#{File.dirname(__FILE__)}/../test/fixtures#{uri.path}"
+      fixture = "#{File.dirname(__FILE__)}/../fixtures#{uri.path}"
       File.read(fixture) if File.exist?(fixture)
     end
   end
