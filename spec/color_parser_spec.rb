@@ -1,14 +1,14 @@
-require_relative "test_helper"
+require 'spec_helper'
 
 describe ColorParser do
-  def setup
-    ColorParser.request = ColorParser::TestRequest.new
+  before(:each) do 
+    ColorParser.request = FakeRequest.new
   end
 
   it "should retrieve fixture" do
     url = "http://example.com/css/absolute.html?foo=bar"
     result = ColorParser.request.get(url)
-    result.wont_be_nil
+    expect(result).to be
   end
 
 
@@ -16,18 +16,23 @@ describe ColorParser do
   
   it "should parse url" do 
     url = "http://example.com/test/something/"
-    assert_equal ["example.com", "/test/something/", nil], ColorParser.parse_url(url)
+    parsed = ColorParser.parse_url(url)
+
+    expect(parsed).to eq ["example.com", "/test/something/", nil]
   end
   
   it "should parse url with no trailing slash" do 
-
     url = "http://example.com"
-    assert_equal ["example.com", "/", nil], ColorParser.parse_url(url)
+    parsed = ColorParser.parse_url(url)
+
+    expect(parsed).to eq ["example.com", "/", nil]
   end
   
   it "should parse url with query params" do 
     url = "http://example.com?foo=bar&baz=bar"
-    assert_equal ["example.com", "/", "foo=bar&baz=bar"], ColorParser.parse_url(url)
+    parsed = ColorParser.parse_url(url)
+
+    expect(parsed).to eq ["example.com", "/", "foo=bar&baz=bar"]
   end
 
 
@@ -38,7 +43,7 @@ describe ColorParser do
     asset = "http://asset.example.com/stylesheets/style.css"
 
     parsed = ColorParser.parse_asset(doc, asset)
-    parsed.must_equal "http://asset.example.com/stylesheets/style.css"
+    expect(parsed).to eq "http://asset.example.com/stylesheets/style.css"
   end
 
   it "should parse asset absolute path with query string" do 
@@ -46,7 +51,7 @@ describe ColorParser do
     asset = "http://asset.example.com/stylesheets/style.css?baz=bar"
   
     parsed = ColorParser.parse_asset(doc, asset)
-    parsed.must_equal "http://asset.example.com/stylesheets/style.css?baz=bar"
+    expect(parsed).to eq "http://asset.example.com/stylesheets/style.css?baz=bar"
   end
   
   it "should parse relative root path" do 
@@ -54,7 +59,7 @@ describe ColorParser do
     asset = "/styles/style.css"
   
     parsed = ColorParser.parse_asset(doc, asset)
-    parsed.must_equal "http://example.com/styles/style.css"
+    expect(parsed).to eq "http://example.com/styles/style.css"
   end
   
   it "should parse relative root path with query string" do 
@@ -62,7 +67,7 @@ describe ColorParser do
     asset = "/styles/style.css?baz=bar"
   
     parsed = ColorParser.parse_asset(doc, asset)
-    parsed.must_equal "http://example.com/styles/style.css?baz=bar"
+    expect(parsed).to eq "http://example.com/styles/style.css?baz=bar"
   end
   
   it "should parse relative path" do 
@@ -70,7 +75,7 @@ describe ColorParser do
     asset = "ie.css"
   
     parsed = ColorParser.parse_asset(doc, asset)
-    parsed.must_equal "http://example.com/stylesheets/ie.css"
+    expect(parsed).to eq "http://example.com/stylesheets/ie.css"
   end
   
   it "should parse relative path with query string" do 
@@ -78,6 +83,6 @@ describe ColorParser do
     asset = "ie.css?baz=bar"
   
     parsed = ColorParser.parse_asset(doc, asset)
-    parsed.must_equal "http://example.com/stylesheets/ie.css?baz=bar"
+    expect(parsed).to eq "http://example.com/stylesheets/ie.css?baz=bar"
   end
 end
