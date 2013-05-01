@@ -230,6 +230,6 @@ end
 private 
 
 def fixture(path)
-  fixture = "#{File.dirname(__FILE__)}/../test/fixtures#{path}"
+  fixture = "#{File.dirname(__FILE__)}/../spec/fixtures#{path}"
   File.read(fixture) if File.exist?(fixture)
 end
