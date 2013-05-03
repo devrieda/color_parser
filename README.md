@@ -29,15 +29,14 @@ images = page.images
 
 ## Installation
 
-```
-gem install color_parser
-```
-```
-gem "color_parser"
+To install ColorParser, add the gem to your Gemfile: 
+
+```ruby
+gem "color_parser", "~> 0.1.0"
 ```
 
 ## LICENSE
 
-Copyright (c) 2012 Derek DeVries
+Copyright (c) 2013 Derek DeVries
 
 Released under the [MIT License](http://www.opensource.org/licenses/MIT)
