@@ -13,20 +13,6 @@ page = ColorParser::Page.new("http://google.com/")
 colors = page.colors
 ```
 
-Get stylesheets on a given webpage
-
-```ruby
-page = ColorParser::Page.new("http://google.com/")
-stylesheets = page.stylesheets
-```
-
-Get images on a given webpage
-
-```ruby
-page = ColorParser::Page.new("http://google.com/")
-images = page.images
-```
-
 ## Installation
 
 To install ColorParser, add the gem to your Gemfile: 
