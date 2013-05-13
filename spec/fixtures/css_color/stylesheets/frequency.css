@@ -1,34 +1,34 @@
 /* backgrounds */
-div {
+div.one {
   background-color: #3a5dc4;
 }
-div {
+div.two {
   background: #386ec0 url("/images/something.png");
 }
-div {
+div.three {
   background: #386ec0 url("/images/something.png");
 }
 
 
 /* text */
-div {
+div.four {
   color: #718ad7;
 }
-h1 {
+h1.five {
   color: #386ec0;
 }
-h2 {
+h2.six {
   color: #386ec0;
 }
 
 /* borders */
-div {
+div.seven {
   border-color: #718ad7;
 }
-div {
+div.eight {
   border: 1px solid #3a5dc4;
 }
-div {
+div.nine {
   border: 1px solid #3a5dc4;
 }
 
