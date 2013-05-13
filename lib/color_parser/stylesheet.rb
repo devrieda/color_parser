@@ -1,23 +1,9 @@
 module ColorParser
-  # a set of css selectors
+
   class Stylesheet
-    attr_reader :url, :type, :host, :path, :query, :text
     
-    def initialize(options)
-      @type  = options[:type]
-      @text  = options[:text]
-      @url   = options[:url]
-
-      @host, @path, @query = ColorParser.parse_url(url)
-    end
-
-    def name
-      path.split("/").last
-    end
-
-    # get imported stylesheets
-    def stylesheets
-      @stylesheets ||= imported_stylesheets
+    def initialize(style_sheet)
+      @style_sheet = style_sheet
     end
 
     # gst list of colors from styles
@@ -28,87 +14,51 @@ module ColorParser
     def bg_colors
       @bg_colors ||= parse_colors(bg_properties)
     end
-
+    
     def text_colors
       @text_colors ||= parse_colors(text_properties)
     end
-
+    
     def border_colors
       @border_colors ||= parse_colors(border_properties)
     end
 
-
-    def images
-      images = []
-
-      image_properties.each do |key, value|
-        if value.include?("url") && match = value.match(/url\(['"]?([^'")]+)/)
-          asset_url = ColorParser.parse_asset(url, match[1])
-          images << Image.new(asset_url)
+    def rules
+      rules = {}
+      
+      ([@style_sheet] + style_sheets).each do |css|
+        css.css_rules.each do |rule|
+          next unless rule.type == ::Stylesheet::CssRule::STYLE_RULE
+          rules[rule.selector_text] ||= {}
+          rules[rule.selector_text].merge!(rule.style.declarations)
         end
       end
 
-      images
-    end
-
-
-    # groups of css selectors (including imported styles)
-    def selectors
-      selectors = {}
-
-      text.scan(/([^\s\}]+)[\s]*?\{(.*?)\}/m).each do |match|
-        selector, rule = match
-        selectors[selector] ||= []
-        selectors[selector] << rule.strip 
-      end
-
-      # imported styles
-      stylesheets.each do |style| 
-        style.selectors.each do |selector, rule| 
-          selectors[selector] ||= []
-          selectors[selector] += rule
-        end
-      end
-
-      selectors
+      rules
     end
 
     # split up selectors into properties, and return property key/value pairs
     def properties
       properties = []
 
-      selectors.each do |selector, rules| 
-        rules.each do |rule|
-          rule.split(";").each do |property| 
-            props = property.split(":", 2).map {|v| v.strip }
-            properties << props if props.size == 2
-          end
-        end
+      rules.values.each do |declarations|
+        declarations.each {|property, value| properties << [property, value] }
       end
-
+      
       properties
     end
 
-
     private
 
-    def imported_stylesheets
-      return [] unless text.include?("@import")
+    # get imported stylesheets
+    def style_sheets
+      @style_sheets ||= import_rules.map {|rule| rule.style_sheet }
+    end
 
-      styles = []
-      text.scan(/@import(?:\surl|\s)(.*?)[;\n]+/).each do |style|
-        style_path = style.first.gsub(/['"\(\);]/, "")
-
-        asset_url = ColorParser.parse_asset(url, style_path)
-        next unless text = ColorParser.request.get(asset_url)
-
-        css = Stylesheet.new(text: text, 
-                             type: "imported", 
-                             url:  asset_url)
-        styles << css
+    def import_rules
+      @style_sheet.css_rules.select do |rule|
+        rule.type == ::Stylesheet::CssRule::IMPORT_RULE
       end
-
-      styles
     end
 
     # find properties that might have a color
@@ -119,7 +69,7 @@ module ColorParser
          "border-left-color", "color", "outline-color"].include?(key)
       end
     end
-    
+
     # properties with bg colors
     def bg_properties 
       color_properties.select {|key, value| key.include?("background") }
@@ -135,11 +85,6 @@ module ColorParser
       color_properties.select do |key, value| 
         key.include?("border") || key.include?("outline")
       end
-    end
-
-    # find properties that might have an image
-    def image_properties
-      color_properties.select {|key, value| key.include?("background") }
     end
 
     def parse_colors(property_list)
