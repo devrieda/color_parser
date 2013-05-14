@@ -15,7 +15,7 @@ describe Page do
     end
   end
 
-  describe ".colors" do 
+  describe "#colors" do 
     let :page do 
       ColorParser::Page.new("http://example.com/css_color/frequency.html")
     end

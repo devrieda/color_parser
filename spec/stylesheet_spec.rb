@@ -5,7 +5,7 @@ describe Stylesheet do
     Stylesheet.request = FakeRequest.new
   end
   
-  describe "selector parsing" do 
+  describe "#rules" do 
     let :style do 
       url = "http://example.com/css_color/stylesheets/properties.css"
       css = ::Stylesheet::CssStyleSheet.new(url)
@@ -25,7 +25,16 @@ describe Stylesheet do
       # imported 
       expect(rules["dl"].size).to eq 1
     end
-    
+  end
+  
+  describe "#properties" do 
+    let :style do 
+      url = "http://example.com/css_color/stylesheets/properties.css"
+      css = ::Stylesheet::CssStyleSheet.new(url)
+  
+      stylesheet = ColorParser::Stylesheet.new(css)
+    end
+
     it "should parse properties" do 
       props = style.properties
   
@@ -43,7 +52,7 @@ describe Stylesheet do
     end
   end
 
-  describe "color parsing" do 
+  describe "#colors" do 
     let :style do 
       url = "http://example.com/css_color/stylesheets/color_styles.css"
       css = ::Stylesheet::CssStyleSheet.new(url)
