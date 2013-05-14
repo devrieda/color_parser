@@ -27,8 +27,7 @@ module ColorParser
       rules = {}
       
       ([@style_sheet] + style_sheets).each do |css|
-        css.css_rules.each do |rule|
-          next unless rule.type == ::Stylesheet::CssRule::STYLE_RULE
+        css.style_rules.each do |rule|
           rules[rule.selector_text] ||= {}
           rules[rule.selector_text].merge!(rule.style.declarations)
         end
@@ -52,13 +51,7 @@ module ColorParser
 
     # get imported stylesheets
     def style_sheets
-      @style_sheets ||= import_rules.map {|rule| rule.style_sheet }
-    end
-
-    def import_rules
-      @style_sheet.css_rules.select do |rule|
-        rule.type == ::Stylesheet::CssRule::IMPORT_RULE
-      end
+      @style_sheets ||= @style_sheet.import_rules.map {|rule| rule.style_sheet }
     end
 
     # find properties that might have a color
