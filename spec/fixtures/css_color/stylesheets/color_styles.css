@@ -1,34 +1,34 @@
 /* color names - 008080 */
-div {
+div.one {
   background-color: teal;
 }
 
 /* hex */
-div {
+div.two {
   color: #386ec0;
 }
 
 /* hex short */
-div {
+div.three {
   color: #c0c;
 }
 
 /* rgb -- 718ad7 */
-div {
+div.four {
   color: rgb(113,138,215);
 }
 
 /* rgb spaces -- 3a5dc4 */
-div {
+div.five {
   color: rgb(58, 93, 196);
 }
 
 /* rgba -- 29469e */
-div {
+div.six {
   color: rgba(41,70,158,0.5);
 }
 
 /* rgba spaces -- 3f6aeb */
-div {
+div.seven {
   color: rgba(63, 106, 235, 0.5);
 }
