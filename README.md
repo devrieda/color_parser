@@ -24,7 +24,7 @@ colors = page.colors_by_freqency
 To install ColorParser, add the gem to your Gemfile: 
 
 ```ruby
-gem "color_parser", "~> 0.1.0"
+gem "color_parser"
 ```
 
 ## LICENSE
