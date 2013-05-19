@@ -82,47 +82,20 @@ module ColorParser
 
     def parse_colors(property_list)
       colors = {}
-      
-      text_colors = ColorParser::Color.text_colors.map {|k,v| k }.join("|")
-
-      property_list.each do |key, value|
-        # hex
-        hex = if matches = value.match(/#([0-9a-f]{3,6})/i)
-          normalize_hex(matches[1])
-
-        # rgb/rgba
-        elsif matches = value.match(/rgba?\((\d{1,3}[,\s]+\d{1,3}[,\s]+\d{1,3})/)
-          rgb_to_hex(matches[1])
-
-        # textual
-        elsif matches = value.match(/(#{text_colors})/)
-          text_to_hex(matches[1])
+      property_list.each do |key, value| 
+        color = nil
+        value.gsub(/\s?,\s?/, ",").split(" ").each do |part|
+          color ||= ColorConversion::Color.new(part) rescue nil
         end
+        next unless color
 
-        next unless hex
-
+        hex = color.hex.gsub("#", "")
         colors[hex] ? colors[hex] += 1 : colors[hex] = 1
       end
 
       # sort by colors with most occurrances
       colors
     end
-
-    # convert rgb to hex
-    def rgb_to_hex(rgb)
-      r, g, b = rgb.split(",").map {|color| color.strip }
-      "%02x" % r + "%02x" % g + "%02x" % b
-    end
-
-    # find hex for textual color
-    def text_to_hex(color)
-      ColorParser::Color.text_colors[color.intern]
-    end
-    
-    # convert 3 digit hex to 6
-    def normalize_hex(hex)
-      (hex.length == 3 ? hex[0,1]*2 + hex[1,1]*2 + hex[2,1]*2: hex).downcase
-    end
-
+  
   end
 end
