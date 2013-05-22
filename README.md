@@ -14,7 +14,7 @@ colors = page.colors
 => {"ffffff"=>5, "c9d7f1"=>1, "0000cc"=>2, "dd8e27"=>1, "990000"=>1, 
     "3366cc"=>3, "000000"=>2, "1111cc"=>5, "cccccc"=>2, "551a8b"=>1}
 
-colors = page.colors_by_freqency
+colors = page.colors_by_frequency
 => ["ffffff", "1111cc", "3366cc", "000000", "cccccc", 
     "0000cc", "dd8e27", "c9d7f1", "990000", "551a8b"]
 ```
