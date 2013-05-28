@@ -1,6 +1,4 @@
 require 'uri'
-require 'curb'
-require 'nokogiri'
 require 'stylesheet'
 require 'color_conversion'
 
