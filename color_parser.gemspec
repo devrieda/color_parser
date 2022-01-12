@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   
   gem.add_runtime_dependency("stylesheet",       "~> 0.1.8")
-  gem.add_runtime_dependency("color_conversion", "~> 0.1.0")
+  gem.add_runtime_dependency("color_conversion", "~> 0.1.1")
 
   gem.add_development_dependency("rake")
   gem.add_development_dependency("rspec", "~> 2.9")
